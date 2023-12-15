@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.codemob.theStoufeitator'
-version '1.0.1'
+version '1.1.0'
 
 repositories {
     mavenCentral()
