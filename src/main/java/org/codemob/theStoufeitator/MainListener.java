@@ -14,14 +14,13 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
 
 import java.util.Objects;
 
 public class MainListener implements Listener {
-    public final Plugin mainPlugin;
+    public final Main mainPlugin;
 
-    public MainListener(Plugin plugin) {
+    public MainListener(Main plugin) {
         mainPlugin = plugin;
     }
 
@@ -42,6 +41,8 @@ public class MainListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().setResourcePack(mainPlugin.resourcePackURL, mainPlugin.resourcePackHash, true);
+
         switch (event.getPlayer().getName()) {
             case "Dogoo_Dogster" -> Main.netherGodUUID = event.getPlayer().getUniqueId();
             case "Kitty_Katster" -> Main.copperMayorUUID = event.getPlayer().getUniqueId();

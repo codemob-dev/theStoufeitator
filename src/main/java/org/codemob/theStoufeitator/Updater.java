@@ -44,12 +44,23 @@ public class Updater {
             if (jsonObject.has("message")) {
                 Bukkit.getLogger().warning(jsonObject.get("message").getAsString());
             } else {
+                for (JsonElement asset : jsonObject.getAsJsonArray("assets")) Bukkit.getLogger().info(asset.getAsJsonObject().get("content_type").getAsString());
+
                 String releaseVersion = jsonObject.get("tag_name").getAsString();
                 if (!releaseVersion.equals("v" + plugin.getDescription().getVersion())) {
                     Bukkit.getLogger().info("Updating to version %s from version v%s".formatted(releaseVersion, plugin.getDescription().getVersion()));
 
-                    String releaseUrl = jsonObject.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
-                    String releaseName = jsonObject.getAsJsonArray("assets").get(0).getAsJsonObject().get("name").getAsString();
+                    int jarIndex = 0;
+                    int i = 0;
+                    for (JsonElement asset : jsonObject.getAsJsonArray("assets")) {
+                        if (asset.getAsJsonObject().get("content_type").getAsString().equals("application/octet-stream")) {
+                            jarIndex = i;
+                            break;
+                        }
+                        i++;
+                    }
+                    String releaseUrl = jsonObject.getAsJsonArray("assets").get(jarIndex).getAsJsonObject().get("browser_download_url").getAsString();
+                    String releaseName = jsonObject.getAsJsonArray("assets").get(jarIndex).getAsJsonObject().get("name").getAsString();
                     File updateFile = new File(Bukkit.getUpdateFolderFile() + File.separator + releaseName);
                     updateFile.getParentFile().mkdir();
 
