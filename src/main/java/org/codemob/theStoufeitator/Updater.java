@@ -35,39 +35,48 @@ public class Updater {
         return response.body();
     }
 
-    public void update(boolean restart) throws IOException, InterruptedException {
+    public void update(boolean restart) throws IOException, InterruptedException, NullPointerException {
         Bukkit.getLogger().info("Retrieving version info...");
         JsonElement json = JsonParser.parseString(getVersionInfo());
         JsonObject jsonObject = json.getAsJsonObject();
-        String releaseVersion = jsonObject.get("tag_name").getAsString();
 
-        if (!releaseVersion.equals("v" + plugin.getDescription().getVersion())) {
-            Bukkit.getLogger().info("Updating to version %s from version v%s".formatted(releaseVersion, plugin.getDescription().getVersion()));
-
-            String releaseUrl  = jsonObject.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
-            String releaseName = jsonObject.getAsJsonArray("assets").get(0).getAsJsonObject().get("name").getAsString();
-            File updateFile = new File(Bukkit.getUpdateFolderFile() + File.separator + releaseName);
-            updateFile.getParentFile().mkdir();
-
-
-            Bukkit.getLogger().info("Downloading update from %s".formatted(releaseUrl));
-            URL releaseAddress = new URL(releaseUrl);
-
-            try (InputStream inputStream = releaseAddress.openStream();
-                 ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream);
-                 FileOutputStream fileOutputStream = new FileOutputStream(updateFile)) {
-                fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, 1 << 24);
-            }
-
-            Bukkit.getLogger().info("Successfully updated!");
-            if (restart) {
-                Bukkit.getLogger().info("Restarting...");
-                Bukkit.getServer().spigot().restart();
+        try {
+            if (jsonObject.has("message")) {
+                Bukkit.getLogger().warning(jsonObject.get("message").getAsString());
             } else {
-                Bukkit.getLogger().info("Reloading...");
-                Bukkit.reload();
+                String releaseVersion = jsonObject.get("tag_name").getAsString();
+                if (!releaseVersion.equals("v" + plugin.getDescription().getVersion())) {
+                    Bukkit.getLogger().info("Updating to version %s from version v%s".formatted(releaseVersion, plugin.getDescription().getVersion()));
+
+                    String releaseUrl = jsonObject.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
+                    String releaseName = jsonObject.getAsJsonArray("assets").get(0).getAsJsonObject().get("name").getAsString();
+                    File updateFile = new File(Bukkit.getUpdateFolderFile() + File.separator + releaseName);
+                    updateFile.getParentFile().mkdir();
+
+
+                    Bukkit.getLogger().info("Downloading update from %s".formatted(releaseUrl));
+                    URL releaseAddress = new URL(releaseUrl);
+
+                    try (InputStream inputStream = releaseAddress.openStream(); ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream); FileOutputStream fileOutputStream = new FileOutputStream(updateFile)) {
+                        fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, 1 << 24);
+                    }
+
+                    Bukkit.getLogger().info("Successfully updated!");
+                    if (restart) {
+                        Bukkit.getLogger().info("Restarting...");
+                        Bukkit.getServer().spigot().restart();
+                    } else {
+                        Bukkit.getLogger().info("Reloading...");
+                        Bukkit.reload();
+                    }
+                    Bukkit.broadcastMessage("%s%sUpdated to version %s!".formatted(ChatColor.BLUE, ChatColor.BOLD, releaseVersion));
+                }
             }
-            Bukkit.broadcastMessage("%s%sUpdated to version %s!".formatted(ChatColor.BLUE, ChatColor.BOLD, releaseVersion));
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning(jsonObject.toString());
+            throw e;
         }
+
+
     }
 }
