@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new MainListener(this), this);
         Bukkit.getScheduler().runTaskTimer(this, new TickRunnable(), 0L, 1L);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
             try {
                 updater.update(false);
             } catch (IOException | InterruptedException | NullPointerException e) {
