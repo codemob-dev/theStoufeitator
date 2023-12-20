@@ -1,6 +1,7 @@
 package org.codemob.theStoufeitator;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -9,6 +10,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -19,14 +21,31 @@ public class Main extends JavaPlugin {
     public static Random random = new Random();
 
     public static final boolean doUpdates = true;
+    public static final boolean forceResourcePack = true;
     public Updater updater = new Updater(this);
 
-    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.2/theStoufeitator.jar";
+    public ArrayList<Grapple> grapples = new ArrayList<>();
+
+    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.5/Server_pack.zip";
 
     public byte[] resourcePackHash;
 
+    public static float unsignedSmoothClip(float val, float max, float i) {
+        return (float) (-Math.pow(1/i, val) + 1) * max;
+    }
+
     @Override
     public void onLoad() {
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.setResourcePack(resourcePackURL, resourcePackHash, forceResourcePack);
+
+            switch (onlinePlayer.getName()) {
+                case "Dogoo_Dogster" -> Main.netherGodUUID   = onlinePlayer.getUniqueId();
+                case "Kitty_Katster" -> Main.copperMayorUUID = onlinePlayer.getUniqueId();
+                case "Codemob"       -> Main.sculkGodUUID    = onlinePlayer.getUniqueId();
+            }
+        }
+
         File temp = new File(System.getProperty("java.io.tmpdir"));
         File downloadLocation = new File(temp.getPath() + File.separator + "resourcePack.zip");
 
@@ -55,7 +74,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new MainListener(this), this);
-        Bukkit.getScheduler().runTaskTimer(this, new TickRunnable(), 0L, 1L);
+        Bukkit.getScheduler().runTaskTimer(this, new TickRunnable(this), 0L, 1L);
         if (doUpdates) {
             Bukkit.getScheduler().runTaskTimer(this, () -> {
                 try {
@@ -64,6 +83,13 @@ public class Main extends JavaPlugin {
                     Bukkit.getLogger().warning("Update failed! If this warning continues, contact Codemob.");
                 }
             }, 0L, 2400L);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        for (Grapple grapple : grapples) {
+            grapple.remove();
         }
     }
 

@@ -9,11 +9,18 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerUnleashEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MusicInstrumentMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
@@ -41,22 +48,76 @@ public class MainListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().setResourcePack(mainPlugin.resourcePackURL, mainPlugin.resourcePackHash, true);
+        event.getPlayer().setResourcePack(mainPlugin.resourcePackURL, mainPlugin.resourcePackHash, Main.forceResourcePack);
 
         switch (event.getPlayer().getName()) {
-            case "Dogoo_Dogster" -> Main.netherGodUUID = event.getPlayer().getUniqueId();
+            case "Dogoo_Dogster" -> Main.netherGodUUID   = event.getPlayer().getUniqueId();
             case "Kitty_Katster" -> Main.copperMayorUUID = event.getPlayer().getUniqueId();
-            case "Codemob" -> Main.sculkGodUUID = event.getPlayer().getUniqueId();
+            case "Codemob"       -> Main.sculkGodUUID    = event.getPlayer().getUniqueId();
         }
     }
 
     @EventHandler
     public void onBowUse(EntityShootBowEvent event) {
         if (Objects.nonNull(event.getBow()) && Objects.nonNull(event.getBow().getItemMeta()) && event.getBow().getItemMeta().hasCustomModelData()) {
-            switch (event.getBow().getItemMeta().getCustomModelData()) {
-                case 1790001 -> onFlameBowUse(event);
-                case 1790002 -> onCopperBowUse(event);
-                case 1790003 -> onExplosiveCopperBowUse(event);
+            switch (event.getBow().getType()) {
+                case BOW -> {
+                    switch (event.getBow().getItemMeta().getCustomModelData()) {
+                        case 1790001 -> onFlameBowUse(event);
+                        case 1790002 -> onCopperBowUse(event);
+                        case 1790003 -> onExplosiveCopperBowUse(event);
+                    }
+                }
+            }
+        }
+    }
+
+    private void onGrappleHookUse(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Location eyeLocation = player.getEyeLocation();
+        Arrow arrow = player.getWorld().spawnArrow(eyeLocation, eyeLocation.getDirection(), 3.6F, 1F);
+        arrow.setMetadata("grappleArrow", new FixedMetadataValue(mainPlugin, true));
+        Grapple grapple = new Grapple(arrow, player);
+        mainPlugin.grapples.add(grapple);
+        ItemMeta meta = event.getItem().getItemMeta();
+        meta.setCustomModelData(1790003);
+        event.getItem().setItemMeta(meta);
+    }
+
+    private void onGrapplePullBackTick(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        int playerGrapples = 0;
+        for (Grapple grapple : mainPlugin.grapples) {
+            if (grapple.player == player) {
+                float distanceChange;
+                if (player.isSneaking()) {
+                    distanceChange = 1;
+                } else {
+                    distanceChange = grapple.maxDistance * -0.02F - 1;
+                    distanceChange = Math.max(-2.5F, distanceChange);
+                }
+
+                grapple.maxDistance += distanceChange;
+                grapple.maxDistance = Math.max(2.5F, grapple.maxDistance);
+                grapple.maxDistance = Math.min(grapple.absoluteMaxDistance, grapple.maxDistance);
+
+                playerGrapples ++;
+            }
+        }
+        if (playerGrapples == 0) {
+            PlayerInventory playerInventory = player.getInventory();
+            if (player.getGameMode() == GameMode.CREATIVE) {
+                ItemMeta meta = event.getItem().getItemMeta();
+                meta.setCustomModelData(1790004);
+                event.getItem().setItemMeta(meta);
+            } else if (playerInventory.contains(Material.ARROW)) {
+                ItemStack arrow = playerInventory.getItem(playerInventory.first(Material.ARROW));
+                arrow.setAmount(arrow.getAmount() - 1);
+
+                ItemMeta meta = event.getItem().getItemMeta();
+                meta.setCustomModelData(1790004);
+                event.getItem().setItemMeta(meta);
             }
         }
     }
@@ -82,9 +143,34 @@ public class MainListener implements Listener {
                 onCopperBowProjectileHit(event);
             } else if (arrow.hasMetadata("explosiveCopperArrow")) {
                 onExplosiveCopperBowProjectileHit(event);
+            } else if (arrow.hasMetadata("grappleArrow")) {
+                onGrappleArrowHit(event);
             }
         }
     }
+
+    private void onGrappleArrowHit(ProjectileHitEvent event) {
+        for (Grapple grapple : mainPlugin.grapples) {
+            if (grapple.projectile == event.getEntity()) {
+                Player player = grapple.player;
+                Vector playerDistance = grapple.projectile.getLocation().subtract(player.getLocation()).toVector();
+                float targetDistance = (float) playerDistance.length() + 6F;
+                grapple.maxDistance = Math.min(targetDistance, grapple.maxDistance);
+
+                if (Objects.nonNull(event.getHitEntity())) {
+                    if (grapple.projectile instanceof LivingEntity livingEntity) {
+                        grapple.projectile = livingEntity;
+                        grapple.bat.setLeashHolder(null);
+                        livingEntity.setLeashHolder(player);
+                        livingEntity.setLastDamage(2);
+                    } else {
+                        grapple.projectile = event.getHitEntity();
+                    }
+                }
+            }
+        }
+    }
+
 
     private void onExplosiveCopperBowProjectileHit(ProjectileHitEvent event) {
         Location location = event.getEntity().getLocation();
@@ -105,6 +191,7 @@ public class MainListener implements Listener {
         event.getEntity().remove();
     }
 
+
     private void onCopperBowProjectileHit(ProjectileHitEvent event) {
         Location location = event.getEntity().getLocation();
         for (int x = location.getBlockX() - 1; x <= location.getBlockX() + 1; x++) {
@@ -121,44 +208,122 @@ public class MainListener implements Listener {
     }
 
     @EventHandler
+    public void onDispenserActivate(BlockDispenseEvent event) {
+        if (event.getBlock().getType() == Material.DISPENSER && event.getItem().getType() == Material.GOAT_HORN) {
+            ItemStack goatHorn = event.getItem();
+            MusicInstrumentMeta meta = (MusicInstrumentMeta) goatHorn.getItemMeta();
+            Sound sound = null;
+            MusicInstrument instrument = meta.getInstrument();
+            if (instrument.equals(MusicInstrument.PONDER)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_0;
+            } else if (instrument.equals(MusicInstrument.SING)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_1;
+            } else if (instrument.equals(MusicInstrument.SEEK)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_2;
+            } else if (instrument.equals(MusicInstrument.FEEL)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_3;
+            } else if (instrument.equals(MusicInstrument.ADMIRE)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_4;
+            } else if (instrument.equals(MusicInstrument.CALL)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_5;
+            } else if (instrument.equals(MusicInstrument.YEARN)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_6;
+            } else if (instrument.equals(MusicInstrument.DREAM)) {
+                sound = Sound.ITEM_GOAT_HORN_SOUND_7;
+            }
+            event.getBlock().getWorld().playSound(event.getBlock().getLocation(), sound, 16, 1);
+
+
+
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent event) {
         switch (event.getAction()) {
             case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> {
-                if (event.hasItem() && event.getItem().getType() == Material.STICK && event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasCustomModelData() && event.getItem().getItemMeta().getCustomModelData() == 1790001) {
-                    Location loc = event.getPlayer().getLocation();
+                if (event.hasItem() && event.getItem().getType() == Material.STICK && event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasCustomModelData()) {
+                    switch (event.getItem().getItemMeta().getCustomModelData()) {
+                        case 1790001 -> {
+                            Location loc = event.getPlayer().getLocation();
 
-                    Objects.requireNonNull(loc.getWorld()).playSound(loc, Sound.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1, 1);
+                            Objects.requireNonNull(loc.getWorld()).playSound(loc, Sound.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1, 1);
 
-                    for (int i = 0; i < 20; i++) {
-                        for (Entity entity : Objects.requireNonNull(loc.getWorld()).getNearbyEntities(loc, 1.5, 1.5, 1.5)) {
-                            if (entity != event.getPlayer() && entity instanceof LivingEntity livingEntity) {
-                                livingEntity.damage(48, event.getPlayer());
+                            for (int i = 0; i < 20; i++) {
+                                for (Entity entity : Objects.requireNonNull(loc.getWorld()).getNearbyEntities(loc, 1.5, 1.5, 1.5)) {
+                                    if (entity != event.getPlayer() && entity instanceof LivingEntity livingEntity) {
+                                        livingEntity.damage(48, event.getPlayer());
+                                    }
+                                }
+
+                                if (Tag.SCULK_REPLACEABLE.isTagged(loc.getBlock().getType()) && Main.random.nextDouble() > 0.85) {
+                                    loc.getBlock().setType(Material.SCULK);
+                                }
+
+                                loc.getWorld().spawnParticle(Particle.SONIC_BOOM, loc, 1);
+                                loc.add(loc.getDirection());
                             }
                         }
-
-                        if (Tag.SCULK_REPLACEABLE.isTagged(loc.getBlock().getType()) && Main.random.nextDouble() > 0.85) {
-                            loc.getBlock().setType(Material.SCULK);
-                        }
-
-                        loc.getWorld().spawnParticle(Particle.SONIC_BOOM, loc, 1);
-                        loc.add(loc.getDirection());
+                        case 1790003 -> onGrappleDisconnect(event);
                     }
                 }
             }
             case RIGHT_CLICK_AIR, RIGHT_CLICK_BLOCK -> {
-                if (event.hasItem() && event.getItem().getType() == Material.STICK && event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasCustomModelData() && event.getItem().getItemMeta().getCustomModelData() == 1790001) {
-                    Location loc = event.getPlayer().getLocation().subtract(0, 1, 0);
-                    Block block = loc.getBlock();
-                    if (!block.isEmpty()) {
-                        block.setType(Material.SCULK_CATALYST);
-                        SculkCatalyst catalyst = (SculkCatalyst) block.getState();
-                        catalyst.bloom(loc.add(1, 1, 1).getBlock(), 500);
-                        catalyst.bloom(loc.add(-1, 1, 1).getBlock(), 500);
-                        catalyst.bloom(loc.add(1, 1, -1).getBlock(), 500);
-                        catalyst.bloom(loc.add(-1, 1, -1).getBlock(), 500);
+                if (event.hasItem() && event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasCustomModelData()) {
+                    switch (event.getItem().getType()) {
+                        case STICK -> {
+                            switch (event.getItem().getItemMeta().getCustomModelData()) {
+                                case 1790001 -> sculkStaffUse(event);
+                                case 1790003 -> onGrapplePullBackTick(event);
+                                case 1790004 -> onGrappleHookUse(event);
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onLeadDisconnect(PlayerUnleashEntityEvent event) {
+        for (Grapple grapple : mainPlugin.grapples) {
+            if (event.getEntity() == grapple.bat || event.getEntity() == grapple.projectile) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private void onGrappleDisconnect(PlayerInteractEvent event) {
+        for (Grapple grapple : mainPlugin.grapples) {
+            Player player = event.getPlayer();
+            if (player == grapple.player) {
+
+                Vector playerDistance = grapple.projectile.getLocation().subtract(player.getLocation()).toVector();
+
+                grapple.remove();
+
+                if (playerDistance.length() <= 4) {
+                    ItemMeta meta = event.getItem().getItemMeta();
+                    meta.setCustomModelData(1790004);
+                    event.getItem().setItemMeta(meta);
+                }
+                break;
+            }
+        }
+    }
+
+    private void sculkStaffUse(PlayerInteractEvent event) {
+        Location loc = event.getPlayer().getLocation().subtract(0, 1, 0);
+        Block block = loc.getBlock();
+        if (!block.isEmpty()) {
+            block.setType(Material.SCULK_CATALYST);
+            SculkCatalyst catalyst = (SculkCatalyst) block.getState();
+            catalyst.bloom(loc.add(1, 1, 1).getBlock(), 500);
+            catalyst.bloom(loc.add(-1, 1, 1).getBlock(), 500);
+            catalyst.bloom(loc.add(1, 1, -1).getBlock(), 500);
+            catalyst.bloom(loc.add(-1, 1, -1).getBlock(), 500);
+        }
+        event.setCancelled(true);
     }
 }
