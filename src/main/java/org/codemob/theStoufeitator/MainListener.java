@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -50,11 +51,7 @@ public class MainListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().setResourcePack(mainPlugin.resourcePackURL, mainPlugin.resourcePackHash, Main.forceResourcePack);
 
-        switch (event.getPlayer().getName()) {
-            case "Dogoo_Dogster" -> Main.netherGodUUID   = event.getPlayer().getUniqueId();
-            case "Kitty_Katster" -> Main.copperMayorUUID = event.getPlayer().getUniqueId();
-            case "Codemob"       -> Main.sculkGodUUID    = event.getPlayer().getUniqueId();
-        }
+        Main.checkUUIDs(event.getPlayer());
     }
 
     @EventHandler
@@ -146,6 +143,19 @@ public class MainListener implements Listener {
             } else if (arrow.hasMetadata("grappleArrow")) {
                 onGrappleArrowHit(event);
             }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player
+                    && player.getUniqueId() == Main.jungleRulerUUID
+                    && player.getInventory().getHelmet().getType() == Material.CARVED_PUMPKIN
+                    && player.getInventory().getHelmet().hasItemMeta()
+                    && player.getInventory().getHelmet().getItemMeta().hasCustomModelData()
+                    && player.getInventory().getHelmet().getItemMeta().getCustomModelData() == 1790006
+                    && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            event.setCancelled(true);
         }
     }
 

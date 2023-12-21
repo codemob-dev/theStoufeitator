@@ -51,6 +51,19 @@ public class TickRunnable implements Runnable {
         }
     }
 
+    private void catHatTick(Player player) {
+        if (player.getUniqueId() == Main.jungleRulerUUID) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 50, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 50, 4, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 4, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 3, false, false));
+        } else {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 50, 1, false, false));
+        }
+    }
+
     public void copperBandTick(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 2, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 2, false, false));
@@ -69,6 +82,7 @@ public class TickRunnable implements Runnable {
                         case 1790003 -> warCrownTick(player);
                         case 1790004 -> sculkCrownTick(player);
                         case 1790005 -> copperBandTick(player);
+                        case 1790006 -> catHatTick(player);
                     }
                 }
             }

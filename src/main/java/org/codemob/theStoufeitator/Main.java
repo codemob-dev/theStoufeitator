@@ -18,6 +18,7 @@ public class Main extends JavaPlugin {
     public static UUID netherGodUUID;
     public static UUID copperMayorUUID;
     public static UUID sculkGodUUID;
+    public static UUID jungleRulerUUID;
     public static Random random = new Random();
 
     public static final boolean doUpdates = true;
@@ -26,7 +27,7 @@ public class Main extends JavaPlugin {
 
     public ArrayList<Grapple> grapples = new ArrayList<>();
 
-    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.5/Server_pack.zip";
+    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.6/Server_pack.zip";
 
     public byte[] resourcePackHash;
 
@@ -34,16 +35,21 @@ public class Main extends JavaPlugin {
         return (float) (-Math.pow(1/i, val) + 1) * max;
     }
 
+    public static void checkUUIDs(Player player) {
+        switch (player.getName()) {
+            case "Dogoo_Dogster" -> Main.netherGodUUID   = player.getUniqueId();
+            case "Kitty_Katster" -> Main.copperMayorUUID = player.getUniqueId();
+            case "Codemob"       -> Main.sculkGodUUID    = player.getUniqueId();
+            case "bethebean"     -> Main.jungleRulerUUID = player.getUniqueId();
+        }
+    }
+
     @Override
     public void onLoad() {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.setResourcePack(resourcePackURL, resourcePackHash, forceResourcePack);
 
-            switch (onlinePlayer.getName()) {
-                case "Dogoo_Dogster" -> Main.netherGodUUID   = onlinePlayer.getUniqueId();
-                case "Kitty_Katster" -> Main.copperMayorUUID = onlinePlayer.getUniqueId();
-                case "Codemob"       -> Main.sculkGodUUID    = onlinePlayer.getUniqueId();
-            }
+            checkUUIDs(onlinePlayer);
         }
 
         File temp = new File(System.getProperty("java.io.tmpdir"));
