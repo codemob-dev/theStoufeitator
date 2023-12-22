@@ -253,29 +253,15 @@ public class MainListener implements Listener {
     public void onPlayerInteraction(PlayerInteractEvent event) {
         switch (event.getAction()) {
             case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> {
-                if (event.hasItem() && event.getItem().getType() == Material.STICK && event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasCustomModelData()) {
-                    switch (event.getItem().getItemMeta().getCustomModelData()) {
-                        case 1790001 -> {
-                            Location loc = event.getPlayer().getLocation();
-
-                            Objects.requireNonNull(loc.getWorld()).playSound(loc, Sound.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1, 1);
-
-                            for (int i = 0; i < 20; i++) {
-                                for (Entity entity : Objects.requireNonNull(loc.getWorld()).getNearbyEntities(loc, 1.5, 1.5, 1.5)) {
-                                    if (entity != event.getPlayer() && entity instanceof LivingEntity livingEntity) {
-                                        livingEntity.damage(48, event.getPlayer());
-                                    }
-                                }
-
-                                if (Tag.SCULK_REPLACEABLE.isTagged(loc.getBlock().getType()) && Main.random.nextDouble() > 0.85) {
-                                    loc.getBlock().setType(Material.SCULK);
-                                }
-
-                                loc.getWorld().spawnParticle(Particle.SONIC_BOOM, loc, 1);
-                                loc.add(loc.getDirection());
+                if (event.hasItem() && event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasCustomModelData()) {
+                    switch (event.getItem().getType()) {
+                        case STICK -> {
+                            switch (event.getItem().getItemMeta().getCustomModelData()) {
+                                case 1790001 -> sculkStaffAttack(event);
+                                case 1790003 -> onGrappleDisconnect(event);
+                                case 1790005 -> jungleStaffAttack(event);
                             }
                         }
-                        case 1790003 -> onGrappleDisconnect(event);
                     }
                 }
             }
@@ -292,6 +278,55 @@ public class MainListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    private void jungleStaffAttack(PlayerInteractEvent event) {
+        event.setCancelled(true);
+        Location location = event.getPlayer().getEyeLocation();
+        float step = 0.25F;
+        for (float i = 0; i < 25; i += step) {
+            location.add(location.getDirection().multiply(step));
+            location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, new Particle.DustOptions(Color.GREEN, 2));
+            if (!location.getBlock().isEmpty()) {
+                location.add(0, 1, 0);
+                Main.fill(location.clone().add(-2, 0, -2), location.clone().add(2, 16, 2), Material.AIR);
+                Main.fill(location.clone().add(-2, -1, -2), location.clone().add(2, -1, 2), Material.GRASS_BLOCK);
+                Main.fill(location.clone().add(-2, -5, -2), location.clone().add(2, -2, 2), Material.DIRT);
+
+
+
+                boolean success = location.getWorld().generateTree(location, TreeType.JUNGLE);
+
+                if (success) {
+                    for (Entity entity : location.getWorld().getNearbyEntities(location.add(0, 15, 0), 3.5, 15, 3.5)) {
+                        entity.teleport(entity.getLocation().add(0, 31, 0));
+                        entity.setVelocity(entity.getVelocity().add(new Vector(0, 3, 0)));
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    private void sculkStaffAttack(PlayerInteractEvent event) {
+        Location loc = event.getPlayer().getLocation();
+
+        Objects.requireNonNull(loc.getWorld()).playSound(loc, Sound.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1, 1);
+
+        for (int i = 0; i < 20; i++) {
+            for (Entity entity : Objects.requireNonNull(loc.getWorld()).getNearbyEntities(loc, 1.5, 1.5, 1.5)) {
+                if (entity != event.getPlayer() && entity instanceof LivingEntity livingEntity) {
+                    livingEntity.damage(48, event.getPlayer());
+                }
+            }
+
+            if (Tag.SCULK_REPLACEABLE.isTagged(loc.getBlock().getType()) && Main.random.nextDouble() > 0.85) {
+                loc.getBlock().setType(Material.SCULK);
+            }
+
+            loc.getWorld().spawnParticle(Particle.SONIC_BOOM, loc, 1);
+            loc.add(loc.getDirection());
         }
     }
 

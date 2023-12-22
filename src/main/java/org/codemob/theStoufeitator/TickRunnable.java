@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class TickRunnable implements Runnable {
-
     Main mainPlugin;
     public TickRunnable(Main main) {
         mainPlugin = main;
@@ -87,13 +86,15 @@ public class TickRunnable implements Runnable {
                 }
             }
 
-            if (Objects.nonNull(playerInventory.getItemInMainHand().getItemMeta()) && playerInventory.getItemInMainHand().getItemMeta().hasCustomModelData()) {
-                if (playerInventory.getItemInMainHand().getType() == Material.STICK) {
-                    ItemMeta meta = playerInventory.getItemInMainHand().getItemMeta();
-                    switch (meta.getCustomModelData()) {
-                        case 1790001 -> livingStaffTick(playerInventory.getItemInMainHand(), player);
-                        case 1790002 -> deadStaffTick(playerInventory.getItemInMainHand(), player);
-                        case 1790003, 1790004 -> grappleGunTick(playerInventory.getItemInMainHand(), player);
+            if (playerInventory.getItemInMainHand().hasItemMeta() && playerInventory.getItemInMainHand().getItemMeta().hasCustomModelData()) {
+                switch (playerInventory.getItemInMainHand().getType()) {
+                    case STICK -> {
+                        ItemMeta meta = playerInventory.getItemInMainHand().getItemMeta();
+                        switch (meta.getCustomModelData()) {
+                            case 1790001 -> livingStaffTick(playerInventory.getItemInMainHand(), player);
+                            case 1790002 -> deadStaffTick(playerInventory.getItemInMainHand(), player);
+                            case 1790003, 1790004 -> grappleGunTick(playerInventory.getItemInMainHand(), player);
+                        }
                     }
                 }
             }

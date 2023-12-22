@@ -1,6 +1,10 @@
 package org.codemob.theStoufeitator;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,14 +24,13 @@ public class Main extends JavaPlugin {
     public static UUID sculkGodUUID;
     public static UUID jungleRulerUUID;
     public static Random random = new Random();
-
     public static final boolean doUpdates = true;
     public static final boolean forceResourcePack = true;
     public Updater updater = new Updater(this);
 
     public ArrayList<Grapple> grapples = new ArrayList<>();
 
-    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.6/Server_pack.zip";
+    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.7/Server_pack.zip";
 
     public byte[] resourcePackHash;
 
@@ -99,6 +102,31 @@ public class Main extends JavaPlugin {
         }
     }
 
+    public static void fill(Location loc1in, Location loc2in, Material material) {
+        fill(loc1in, loc2in, material, material.createBlockData());
+    }
+
+    public static void fill(Location loc1in, Location loc2in, Material material, BlockData blockData) {
+        Location loc1 = new Location(loc1in.getWorld(),
+                Math.min(loc1in.getBlockX(), loc2in.getBlockX()),
+                Math.min(loc1in.getBlockY(), loc2in.getBlockY()),
+                Math.min(loc1in.getBlockZ(), loc2in.getBlockZ()));
+
+        Location loc2 = new Location(loc1in.getWorld(),
+                Math.max(loc1in.getBlockX(), loc2in.getBlockX()),
+                Math.max(loc1in.getBlockY(), loc2in.getBlockY()),
+                Math.max(loc1in.getBlockZ(), loc2in.getBlockZ()));
+
+        for (int x = loc1.getBlockX(); x <= loc2.getBlockX(); x++) {
+            for (int y = loc1.getBlockY(); y <= loc2.getBlockY(); y++) {
+                for (int z = loc1.getBlockZ(); z <= loc2.getBlockZ(); z++) {
+                    Block block = loc1.getWorld().getBlockAt(x, y, z);
+                    block.setType(material);
+                    block.setBlockData(blockData);
+                }
+            }
+        }
+    }
 
 
     public static byte[] createSha1(File file) throws IOException, NoSuchAlgorithmException {
