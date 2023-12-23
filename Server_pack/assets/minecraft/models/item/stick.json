@@ -29,6 +29,12 @@
             "custom_model_data": 1790005
         }, 
         "model": "minecraft:weapons/jungle_staff/jungle_staff"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1790006
+      },
+      "model": "minecraft:weapons/boom/boom_stick"
     }
   ]
 }
