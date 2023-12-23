@@ -70,6 +70,10 @@
         },
         {
             "type": "single",
+            "resource": "minecraft:weapons/boom/boom_panel"
+        },
+        {
+            "type": "single",
             "resource": "minecraft:weapons/copper_axe/copper_block"
         },
         {
