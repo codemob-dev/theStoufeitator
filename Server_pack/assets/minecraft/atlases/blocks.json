@@ -1,0 +1,244 @@
+{
+    "sources": [
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/cat_hat/cat_hat"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_band/card"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_band/copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_band/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_band/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_hat/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_hat/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_hat/oxidized_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_hat/copper_block"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/copper_hat/card"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/nether_crown/crown_ring"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/nether_crown/yellow_jewels"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/nether_crown/blue_jewels"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/sculk_crown/crown"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/war_crown/dark"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:crowns/war_crown/yellow"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/bone_knife/bone"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_axe/copper_block"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_axe/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_axe/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_axe/oxidized_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_sword/copper_block"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_sword/oxidized_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_sword/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_sword/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/warden_staff/dead_staff"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_sword/flame"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_sword/ash"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_sword/gold"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/lava_war_axe/flame"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/lava_war_axe/ash"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/warden_staff/staff"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/copper_block"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/oxidized_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/oak_log"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/oak_log_top"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_bow/white_wool"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_watch/card"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_watch/copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_watch/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_watch/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/copper_watch/oxidized_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/copper_block"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/oxidized_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/exposed_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/weathered_copper"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/tnt_side"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/oak_log"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/oak_log_top"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/explosive_copper_bow/white_wool"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_bow/flame"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_bow/ash"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_shield/thing"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_shield/flame"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_shield/ash"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/flame_shield/gold"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/grappling_hook/grappling_hook"
+        },
+        {
+            "type": "single",
+            "resource": "minecraft:weapons/jungle_staff/jungle_staff"
+        }
+    ]
+}

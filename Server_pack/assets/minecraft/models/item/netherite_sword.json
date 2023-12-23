@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/netherite_sword"
+  }, 
+  "overrides": [
+    {
+      "predicate": {"custom_model_data": 1790001}, 
+      "model": "minecraft:weapons/copper_blade"
+    }, 
+    {
+      "predicate": {"custom_model_data": 1790002}, 
+      "model": "minecraft:weapons/flame_sword"
+    }, 
+    {
+      "predicate": {"custom_model_data": 1790003}, 
+      "model": "minecraft:weapons/bone_knife"
+    }
+  ]
+}

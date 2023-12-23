@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/stick"
+  },
+  "overrides": [
+    {
+      "predicate": {"custom_model_data": 1790001}, 
+      "model": "minecraft:weapons/warden_staff"
+    }, 
+    {
+      "predicate": {"custom_model_data": 1790002}, 
+      "model": "minecraft:weapons/dead_staff"
+    }, 
+    {
+        "predicate": {
+            "custom_model_data": 1790003
+        }, 
+        "model": "minecraft:weapons/grappling_hook/grappling_hook"
+    }, 
+    {
+        "predicate": {
+            "custom_model_data": 1790004
+        }, 
+        "model": "minecraft:weapons/grappling_hook/grappling_hook_loaded"
+    }, 
+    {
+        "predicate": {
+            "custom_model_data": 1790005
+        }, 
+        "model": "minecraft:weapons/jungle_staff/jungle_staff"
+    }
+  ]
+}

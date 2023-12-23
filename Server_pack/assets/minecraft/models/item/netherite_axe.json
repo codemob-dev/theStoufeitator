@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/netherite_axe"
+  }, 
+  "overrides": [
+    {
+      "predicate": {"custom_model_data": 1790001}, 
+      "model": "minecraft:weapons/lava_war_axe"
+    }, 
+    {
+      "predicate": {"custom_model_data": 1790002}, 
+      "model": "minecraft:weapons/copper_axe"
+    }
+  ]
+}

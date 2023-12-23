@@ -1,0 +1,42 @@
+[
+    {
+        "section": "Mojang Studios",
+        "disciplines": [
+            {
+                "discipline": "Mojang Studios Leadership",
+                "titles": [
+                    {
+                        "title": "Studio Head of Mojang Studios",
+                        "names": [
+                            "Codemob"
+                        ]
+                    },
+                    {
+                        "title": "Head of Stockholm Studio",
+                        "names": [
+                            "Dogoo_Dogster"
+                        ]
+                    },
+                    {
+                        "title": "Head of Growth Products & Partnerships",
+                        "names": [
+                            "Kitty_Katster"
+                        ]
+                    },
+                    {
+                        "title": "Chief of Staff",
+                        "names": [
+                            "The purple potato gods"
+                        ]
+                    },
+                    {
+                        "title": "Head of Franchise Player Ecosystem",
+                        "names": [
+                            "The pizza gods" 
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
