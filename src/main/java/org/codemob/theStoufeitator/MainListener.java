@@ -161,6 +161,12 @@ public class MainListener implements Listener {
         }
     }
 
+    private void onBoomStickBoom(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        event.getPlayer().getWorld().createExplosion(player.getLocation(), 2.0F, true, true, player);
+        player.setVelocity(player.getVelocity().add(new Vector(0, 2, 0)));
+    }
+
     private void onGrappleArrowHit(ProjectileHitEvent event) {
         for (Grapple grapple : mainPlugin.grapples) {
             if (grapple.projectile == event.getEntity()) {
@@ -275,6 +281,7 @@ public class MainListener implements Listener {
                                 case 1790001 -> sculkStaffUse(event);
                                 case 1790003 -> onGrapplePullBackTick(event);
                                 case 1790004 -> onGrappleHookUse(event);
+                                case 1790006 -> onBoomStickBoom(event);
                             }
                         }
                     }
