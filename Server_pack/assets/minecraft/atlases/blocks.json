@@ -66,6 +66,10 @@
         },
         {
             "type": "single",
+            "resource": "minecraft:tools/copper_pickaxe"
+        },
+        {
+            "type": "single",
             "resource": "minecraft:tools/sculk_pickaxe"
         },
         {
