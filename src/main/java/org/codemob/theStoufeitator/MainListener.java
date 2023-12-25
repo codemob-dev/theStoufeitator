@@ -386,10 +386,7 @@ public class MainListener implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
         Location location = event.getBlock().getLocation();
-        if (item.getType() == Material.DIAMOND_PICKAXE
-                    && item.hasItemMeta()
-                    && item.getItemMeta().hasCustomModelData()
-                    && item.getItemMeta().getCustomModelData() == 1790001) {
+        if (item.getType() == Material.DIAMOND_PICKAXE && item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1790001) {
 
             Main.replaceSculk(location.clone().add(1, 0, 0));
             Main.replaceSculk(location.clone().add(0, 1, 0));
@@ -398,6 +395,14 @@ public class MainListener implements Listener {
             Main.replaceSculk(location.clone().add(-1, 0, 0));
             Main.replaceSculk(location.clone().add(0, -1, 0));
             Main.replaceSculk(location.clone().add(0, 0, -1));
+        } else if (item.getType() == Material.NETHERITE_PICKAXE && item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1790001) {
+            Main.replaceSculkable(location.clone().add(1, 0, 0), Material.COPPER_BLOCK);
+            Main.replaceSculkable(location.clone().add(0, 1, 0), Material.COPPER_BLOCK);
+            Main.replaceSculkable(location.clone().add(0, 0, 1), Material.COPPER_BLOCK);
+
+            Main.replaceSculkable(location.clone().add(-1, 0, 0), Material.COPPER_BLOCK);
+            Main.replaceSculkable(location.clone().add(0, -1, 0), Material.COPPER_BLOCK);
+            Main.replaceSculkable(location.clone().add(0, 0, -1), Material.COPPER_BLOCK);
         }
     }
 

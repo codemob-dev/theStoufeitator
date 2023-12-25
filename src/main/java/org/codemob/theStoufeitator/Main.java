@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 
     public ArrayList<Grapple> grapples = new ArrayList<>();
 
-    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.9/Server_pack.zip";
+    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.10/Server_pack.zip";
 
     public byte[] resourcePackHash;
 
@@ -144,9 +144,14 @@ public class Main extends JavaPlugin {
         }
         return digest.digest();
     }
+
     public static boolean replaceSculk(Location location) {
+        return replaceSculkable(location, Material.SCULK);
+    }
+
+    public static boolean replaceSculkable(Location location, Material material) {
         if (Tag.SCULK_REPLACEABLE.isTagged(location.getBlock().getType())) {
-            location.getBlock().setType(Material.SCULK);
+            location.getBlock().setType(material);
             return true;
         }
         return false;
