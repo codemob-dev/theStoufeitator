@@ -66,6 +66,10 @@
         },
         {
             "type": "single",
+            "resource": "minecraft:tools/sculk_pickaxe"
+        },
+        {
+            "type": "single",
             "resource": "minecraft:weapons/bone_knife/bone"
         },
         {

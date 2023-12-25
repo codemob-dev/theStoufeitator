@@ -9,6 +9,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -364,11 +366,45 @@ public class MainListener implements Listener {
         if (!block.isEmpty()) {
             block.setType(Material.SCULK_CATALYST);
             SculkCatalyst catalyst = (SculkCatalyst) block.getState();
-            catalyst.bloom(loc.add(1, 1, 1).getBlock(), 500);
-            catalyst.bloom(loc.add(-1, 1, 1).getBlock(), 500);
-            catalyst.bloom(loc.add(1, 1, -1).getBlock(), 500);
-            catalyst.bloom(loc.add(-1, 1, -1).getBlock(), 500);
+            catalyst.bloom(loc.add(1, 1, 1).getBlock(), 68); // note: this number is random
+            catalyst.bloom(loc.add(-1, 1, 1).getBlock(), 68); // note: this number is also random
+            catalyst.bloom(loc.add(1, 1, -1).getBlock(), 68); // note: this number is the same as the others, and the others are random. Does that make this number random too?
+            catalyst.bloom(loc.add(-1, 1, -1).getBlock(), 68); // note: im suffering
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockBroken(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Location location = event.getBlock().getLocation();
+        if (item.getType() == Material.DIAMOND_PICKAXE
+                    && item.hasItemMeta()
+                    && item.getItemMeta().hasCustomModelData()
+                    && item.getItemMeta().getCustomModelData() == 1790001) {
+
+            Main.replaceSculk(location.clone().add(1, 0, 0));
+            Main.replaceSculk(location.clone().add(0, 1, 0));
+            Main.replaceSculk(location.clone().add(0, 0, 1));
+
+            Main.replaceSculk(location.clone().add(-1, 0, 0));
+            Main.replaceSculk(location.clone().add(0, -1, 0));
+            Main.replaceSculk(location.clone().add(0, 0, -1));
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreakStart(BlockDamageEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Location location = event.getBlock().getLocation();
+        if (item.getType() == Material.DIAMOND_PICKAXE
+                    && item.hasItemMeta()
+                    && item.getItemMeta().hasCustomModelData()
+                    && item.getItemMeta().getCustomModelData() == 1790001
+                    && item.getType() == Material.SCULK) {
+            event.setInstaBreak(true);
+        }
     }
 }
