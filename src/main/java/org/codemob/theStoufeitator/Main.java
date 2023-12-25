@@ -3,6 +3,7 @@ package org.codemob.theStoufeitator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class Main extends JavaPlugin {
 
     public ArrayList<Grapple> grapples = new ArrayList<>();
 
-    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.7/Server_pack.zip";
+    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.8/Server_pack.zip";
 
     public byte[] resourcePackHash;
 
@@ -142,5 +143,12 @@ public class Main extends JavaPlugin {
             }
         }
         return digest.digest();
+    }
+    public static boolean replaceSculk(Location location) {
+        if (Tag.SCULK_REPLACEABLE.isTagged(location.getBlock().getType())) {
+            location.getBlock().setType(Material.SCULK);
+            return true;
+        }
+        return false;
     }
 }
