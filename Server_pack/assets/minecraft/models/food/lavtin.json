@@ -290,15 +290,15 @@
 			"translation": [-4, 5, 0]
 		},
 		"firstperson_lefthand": {
-			"rotation": [157.97, 62.61, -155.51],
-			"translation": [0, 7.25, 0]
+			"rotation": [-180, 24.25, -180],
+			"translation": [-4, 5, 0]
 		},
 		"ground": {
 			"translation": [0, 3.75, 0]
 		},
 		"gui": {
 			"rotation": [98.5, 0, 0],
-			"translation": [-58.5, 29, 0]
+			"translation": [0, -1.25, 0]
 		},
 		"head": {
 			"translation": [0, 17.25, 0],
