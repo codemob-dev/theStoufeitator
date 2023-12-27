@@ -410,6 +410,8 @@ public class MainListener implements Listener {
         if (item.getType() == Material.ENCHANTED_GOLDEN_APPLE && item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1790001) {
             if (event.getPlayer().getUniqueId() != Main.netherGodUUID) {
                 event.getPlayer().setFireTicks(100);
+                event.getPlayer().getInventory().getItem(event.getHand()).setAmount(0);
+                event.setItem(new ItemStack(Material.GOLDEN_CARROT));
             }
         }
     }
