@@ -15,9 +15,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerUnleashEntityEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -405,6 +403,17 @@ public class MainListener implements Listener {
             Main.replaceSculkable(location.clone().add(0, 0, -1), Material.COPPER_BLOCK);
         }
     }
+
+    @EventHandler
+    public void onPlayerEat(PlayerItemConsumeEvent event) {
+        ItemStack item = event.getItem();
+        if (item.getType() == Material.ENCHANTED_GOLDEN_APPLE && item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1790001) {
+            if (event.getPlayer().getUniqueId() != Main.netherGodUUID) {
+                event.getPlayer().setFireTicks(100);
+            }
+        }
+    }
+
 
     @EventHandler
     public void onBlockBreakStart(BlockDamageEvent event) {

@@ -66,6 +66,10 @@
         },
         {
             "type": "single",
+            "resource": "minecraft:food/lavtin"
+        },
+        {
+            "type": "single",
             "resource": "minecraft:tools/copper_pickaxe"
         },
         {
