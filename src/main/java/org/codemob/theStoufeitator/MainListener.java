@@ -159,7 +159,7 @@ public class MainListener implements Listener {
     private void onBoomStickBoom(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         event.getPlayer().getWorld().createExplosion(player.getLocation(), 2.0F, true, true, player);
-        player.setVelocity(player.getVelocity().add(new Vector(0, 2, 0)));
+        player.setVelocity(player.getVelocity().add(new Vector(0, 2, 0)).add(player.getLocation().getDirection().multiply(1.5)));
     }
 
     private void onGrappleArrowHit(ProjectileHitEvent event) {

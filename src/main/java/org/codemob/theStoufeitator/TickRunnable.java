@@ -44,6 +44,8 @@ public class TickRunnable implements Runnable {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 50, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 50, 19, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 50, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 50, 0, false, false));
+            player.removePotionEffect(PotionEffectType.DARKNESS);
         } else {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 10));
             player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 50, 10));
