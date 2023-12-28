@@ -74,6 +74,10 @@
         },
         {
             "type": "single",
+            "resource": "minecraft:tools/pigaxe"
+        },
+        {
+            "type": "single",
             "resource": "minecraft:tools/sculk_pickaxe"
         },
         {

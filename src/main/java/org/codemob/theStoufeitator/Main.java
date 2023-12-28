@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 
     public ArrayList<Grapple> grapples = new ArrayList<>();
 
-    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.11/Server_pack.zip";
+    public String resourcePackURL = "https://github.com/commandblox/theStoufeitator/releases/download/v1.1.12/Server_pack.zip";
 
     public byte[] resourcePackHash;
 
