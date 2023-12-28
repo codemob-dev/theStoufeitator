@@ -3,10 +3,7 @@ package org.codemob.theStoufeitator;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.SculkCatalyst;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -410,9 +407,20 @@ public class MainListener implements Listener {
         if (item.getType() == Material.ENCHANTED_GOLDEN_APPLE && item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1790001) {
             if (event.getPlayer().getUniqueId() != Main.netherGodUUID) {
                 event.getPlayer().setFireTicks(100);
-                event.getPlayer().getInventory().getItem(event.getHand()).setAmount(0);
+                ItemStack consumedItem = event.getPlayer().getInventory().getItem(event.getHand());
+                consumedItem.setAmount(consumedItem.getAmount() - 1);
                 event.setItem(new ItemStack(Material.GOLDEN_CARROT));
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerCrouch(PlayerToggleSneakEvent event) {
+        if (event.isSneaking() && Main.random.nextDouble(0, 1) < 0.001) {
+            Player player = event.getPlayer();
+            Item poo = player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.BROWN_DYE));
+            poo.getItemStack().getItemMeta().setDisplayName("poo");
+            poo.setVelocity(player.getLocation().getDirection().multiply(new Vector(-0.2, 0, -0.2)));
         }
     }
 

@@ -47,6 +47,7 @@ public class Updater {
                 for (JsonElement asset : jsonObject.getAsJsonArray("assets")) Bukkit.getLogger().info(asset.getAsJsonObject().get("content_type").getAsString());
 
                 String releaseVersion = jsonObject.get("tag_name").getAsString();
+                String versionInfo = jsonObject.get("body").getAsString();
                 if (!releaseVersion.equals("v" + plugin.getDescription().getVersion())) {
                     Bukkit.getLogger().info("Updating to version %s from version v%s".formatted(releaseVersion, plugin.getDescription().getVersion()));
 
@@ -81,6 +82,7 @@ public class Updater {
                         Bukkit.reload();
                     }
                     Bukkit.broadcastMessage("%s%sUpdated to version %s!".formatted(ChatColor.BLUE, ChatColor.BOLD, releaseVersion));
+                    Bukkit.broadcastMessage("%s%sCHANGELOG: %s!".formatted(ChatColor.BLUE, ChatColor.BOLD, versionInfo));
                 }
             }
         } catch (NullPointerException e) {
