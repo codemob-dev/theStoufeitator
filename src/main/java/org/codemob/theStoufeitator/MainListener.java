@@ -401,7 +401,7 @@ public class MainListener implements Listener {
                     Main.replaceSculkable(location.clone().add(0, -1, 0), Material.COPPER_BLOCK);
                     Main.replaceSculkable(location.clone().add(0, 0, -1), Material.COPPER_BLOCK);
                 }
-                case 1790002 -> location.getWorld().spawn(location, Pig.class);
+                case 1790002 -> location.getWorld().spawnEntity(location, EntityType.PIG);
             }
         }
     }
