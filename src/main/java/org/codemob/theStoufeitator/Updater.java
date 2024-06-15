@@ -20,7 +20,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public class Updater {
-    public String address = "https://api.github.com/repos/commandblox/theStoufeitator/releases/latest";
+    public String address = "https://api.github.com/repos/codemob-dev/theStoufeitator/releases/latest";
     public Plugin plugin;
 
     public Updater(Plugin plugin) {
