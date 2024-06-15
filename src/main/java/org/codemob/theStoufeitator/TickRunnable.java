@@ -23,43 +23,43 @@ public class TickRunnable implements Runnable {
 
     public void warCrownTick(Player player) {
         if (player.getUniqueId() == Main.netherGodUUID) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 50, 2, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 50, 2, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 50, 2, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 50, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 50, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 50, 9, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 50, 0, false, false));
         } else {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 50, 1, false, true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 50, 1, false, true));
         }
     }
 
     public void copperHatTick(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 50, 1, false, true));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 50, 1, false, true));
         player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 50, 4, false, true));
     }
 
     public void sculkCrownTick(Player player) {
         if (player.getUniqueId() == Main.sculkGodUUID) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 50, 5, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 50, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 50, 5, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 50, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 50, 19, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 50, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 50, 0, false, false));
             player.removePotionEffect(PotionEffectType.DARKNESS);
         } else {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 50, 10));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 50, 10));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 50, 10));
         }
     }
 
     private void catHatTick(Player player) {
         if (player.getUniqueId() == Main.jungleRulerUUID) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 50, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 50, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 50, 4, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 4, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 50, 4, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 3, false, false));
         } else {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 50, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 50, 1, false, false));
         }
@@ -67,7 +67,7 @@ public class TickRunnable implements Runnable {
 
     public void copperBandTick(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 2, false, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 2, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 50, 2, false, false));
     }
 
     @Override
@@ -161,12 +161,12 @@ public class TickRunnable implements Runnable {
     private void netherCrownTick(Player player) {
         if (player.getUniqueId() == Main.netherGodUUID) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 2, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 2, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 50, 2, false, false));
         } else if (player.getUniqueId() == Main.sculkGodUUID) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 50, 0, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 50, 0, false, false));
         } else {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 50, 1, false, true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 50, 1, false, true));
         }
     }
 

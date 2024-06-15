@@ -227,21 +227,21 @@ public class MainListener implements Listener {
             MusicInstrumentMeta meta = (MusicInstrumentMeta) goatHorn.getItemMeta();
             Sound sound = null;
             MusicInstrument instrument = meta.getInstrument();
-            if (instrument.equals(MusicInstrument.PONDER)) {
+            if (instrument.equals(MusicInstrument.PONDER_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_0;
-            } else if (instrument.equals(MusicInstrument.SING)) {
+            } else if (instrument.equals(MusicInstrument.SING_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_1;
-            } else if (instrument.equals(MusicInstrument.SEEK)) {
+            } else if (instrument.equals(MusicInstrument.SEEK_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_2;
-            } else if (instrument.equals(MusicInstrument.FEEL)) {
+            } else if (instrument.equals(MusicInstrument.FEEL_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_3;
-            } else if (instrument.equals(MusicInstrument.ADMIRE)) {
+            } else if (instrument.equals(MusicInstrument.ADMIRE_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_4;
-            } else if (instrument.equals(MusicInstrument.CALL)) {
+            } else if (instrument.equals(MusicInstrument.CALL_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_5;
-            } else if (instrument.equals(MusicInstrument.YEARN)) {
+            } else if (instrument.equals(MusicInstrument.YEARN_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_6;
-            } else if (instrument.equals(MusicInstrument.DREAM)) {
+            } else if (instrument.equals(MusicInstrument.DREAM_GOAT_HORN)) {
                 sound = Sound.ITEM_GOAT_HORN_SOUND_7;
             }
             event.getBlock().getWorld().playSound(event.getBlock().getLocation(), sound, 16, 1);
@@ -291,7 +291,7 @@ public class MainListener implements Listener {
         float step = 0.25F;
         for (float i = 0; i < 25; i += step) {
             location.add(location.getDirection().multiply(step));
-            location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, new Particle.DustOptions(Color.GREEN, 2));
+            location.getWorld().spawnParticle(Particle.DUST, location, 2, 0.2, 0.2, 0.2, new Particle.DustOptions(Color.GREEN, 2));
             if (!location.getBlock().isEmpty()) {
                 location.add(0, 1, 0);
                 Main.fill(location.clone().add(-2, 0, -2), location.clone().add(2, 16, 2), Material.AIR);
